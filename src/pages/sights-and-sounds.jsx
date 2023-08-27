@@ -18,8 +18,8 @@ export default function SightsAndSounds() {
       <div className="flex justify-center">
         <YoutubeEmbed embedId="apxAkPgElHw" />
       </div>
-      <Image
-        src="/stage.png"
+      <img
+        src="stage.png"
         alt="performing"
         width={0}
         height={0}

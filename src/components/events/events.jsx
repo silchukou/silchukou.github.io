@@ -40,7 +40,11 @@ export function Events() {
   return (
     <>
       <div className="bg-wrap">
-        <img className="bg-image" src="/events_bg.png" alt="" />
+        <img
+          className="bg-image"
+          src="events_bg.png"
+          alt="Event Page Background"
+        />
         {events.map((event) => (
           <EventCard event={event} key={event.id} />
         ))}
