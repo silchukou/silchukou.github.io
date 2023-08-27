@@ -1,0 +1,14 @@
+{
+    "title": "Let's get in touch!",
+    "name": "Name",
+    "name_missing_error": "Please enter your name",
+    "email": "Email",
+    "email_missing_error": "Please enter your email",
+    "email_invalid_error": "Please enter a valid email",
+    "subject": "Message",
+    "subject_missing_error": "Please enter a message",
+    "i_aggree_to_the": "I agree to the",
+    "terms_and_conditions": "Terms and Conditions",
+    "terms_missing_error": "Please agree to the terms and conditions",
+    "submit": "Submit"
+}

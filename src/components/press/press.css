@@ -1,0 +1,12 @@
+.bg-grey-light-hover:hover {
+    background-color: rgb(var(--background-item-light-rgb));
+}
+
+.object-cover {
+    animation: appear 1s ease-out 0s forwards;
+    transition: 1.5s;
+}
+
+.card:hover .object-cover {
+    transform: scale(1.05);
+}
