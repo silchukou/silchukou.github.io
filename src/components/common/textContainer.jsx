@@ -6,9 +6,10 @@ export default function TextContainer({ children }) {
     return (
       <ReactMarkdown
         className="max-w-screen-md m-auto text-lg"
-        children={children}
         remarkPlugins={[remarkGfm]}
-      />
+      >
+        {children}
+      </ReactMarkdown>
     );
   }
 
