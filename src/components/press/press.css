@@ -3,8 +3,7 @@
 }
 
 .object-cover {
-    animation: appear 1s ease-out 0s forwards;
-    transition: 1.5s;
+    transition: 0.5s;
 }
 
 .card:hover .object-cover {

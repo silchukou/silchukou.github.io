@@ -26,6 +26,11 @@ export default function App({ Component, pageProps }) {
               // colorBgElevated: "#ffffff",
               colorPrimaryBg: "#ffffff",
             },
+            Notification: {
+              colorText: "#ffffff",
+              colorBgElevated: "#282828",
+              colorBg: "#282828",
+            },
           },
           token: {
             // Seed Token

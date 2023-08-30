@@ -39,10 +39,7 @@ export function Banner() {
         <Player />
 
         <div className="absolute top-8 h-10 right-8 flex justify-center items-center">
-          <button
-            onClick={toggleLocale}
-            className="text-white bg-grey bg-grey-light-hover transition rounded-lg px-3 py-2 w-24"
-          >
+          <button onClick={toggleLocale} className="button w-24">
             {locales.map((l, i) => (
               <span key={l}>
                 <span

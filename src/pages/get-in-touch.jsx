@@ -1,17 +1,49 @@
 import { Title } from "@/components/common/title";
-import { Button, Checkbox, Form, Input } from "antd";
-import { useContext } from "react";
+import { Checkbox, Form, Input, Spin, notification } from "antd";
+import { useContext, useState } from "react";
 import { LocaleContext } from "../contexts/locale";
+import { ImSpinner2 } from "react-icons/im";
 
 export default function Home() {
   const { _t } = useContext(LocaleContext);
+  const [loading, setLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+
+  async function handleSubmit(values) {
+    setLoading(true);
+    const access_key = "8c0645bb-e8b2-4813-b58e-b1bbd5ee8609";
+    const formData = new FormData();
+    formData.append("access_key", access_key);
+    formData.append("name", values.name);
+    formData.append("email", values.email);
+    formData.append("message", values.message);
+
+    await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    }).then((res) => {
+      setLoading(false);
+      if (res.status === 200) {
+        api.success({
+          message: _t("contact:success_message"),
+          placement: "bottomRight",
+        });
+      } else {
+        api.error({
+          message: _t("contact:error_message"),
+          placement: "bottomRight",
+        });
+      }
+    });
+  }
 
   return (
     <>
+      {contextHolder}
       <Title>{_t("contact:title")}</Title>
       <div className="flex lg:flex-row flex-col items-center justify-center">
-        <div className="w-full">
-          <img src="contact_image.png" />
+        <div className="w-full mb-4 xl:mb-0">
+          <img src="contact_image.png" className="m-auto" />
         </div>
         <div className="w-full">
           <Form
@@ -19,8 +51,7 @@ export default function Home() {
             layout="vertical"
             className="text-white"
             initialValues={{ remember: true }}
-            // onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
+            onFinish={handleSubmit}
           >
             <Form.Item
               label={_t("contact:name")}
@@ -78,14 +109,18 @@ export default function Home() {
                 </a>
               </Checkbox>
             </Form.Item>
+
             <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="bg-grey m-auto"
-              >
-                {_t("contact:submit")}
-              </Button>
+              <button type="primary" className="button self-center">
+                {(loading && (
+                  <Spin
+                    indicator={
+                      <ImSpinner2 className="animate-spin text-white" />
+                    }
+                  />
+                )) ||
+                  _t("contact:submit")}
+              </button>
             </Form.Item>
           </Form>
         </div>

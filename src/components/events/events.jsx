@@ -1,53 +1,61 @@
+"client";
 import "./events.css";
 import { EventCard } from "./eventCard";
+import { useEffect, useState } from "react";
+import {
+  getUpcomingEvents,
+  getUpcomingEventsCount,
+} from "../../services/sanity";
+import { Spin } from "antd";
+import { ImSpinner2 } from "react-icons/im";
 
 export function Events() {
-  const events = [
-    {
-      id: 1,
-      location: "Distler Performance Hall",
-      date: "2023-12-17",
-      state: "Medfort, MA",
-      link: "https://www.google.com",
-      background: "card_demo_1.png",
-    },
-    {
-      id: 2,
-      location: "Distler Performance Hall",
-      date: "2023-12-17",
-      state: "Medfort, MA",
-      link: "https://www.google.com",
-      background: "card_demo_2.png",
-    },
-    {
-      id: 3,
-      location: "Distler Performance Hall",
-      date: "2023-12-17",
-      state: "Medfort, MA",
-      link: "https://www.google.com",
-      background: "card_demo_3.png",
-    },
-    {
-      id: 4,
-      location: "Distler Performance Hall",
-      date: "2023-12-17",
-      state: "Medfort, MA",
-      link: "https://www.google.com",
-      background: "card_demo_4.png",
-    },
-  ];
+  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    setLoading(true);
+    getUpcomingEvents(events.length, events.length + 4).then((data) => {
+      setLoading(false);
+      setEvents((prev) => [...prev, ...data]);
+    });
+    getUpcomingEventsCount().then((data) => {
+      setTotalCount(data);
+    });
+  }, []);
+
+  const loadMore = () => {
+    setLoading(true);
+    getUpcomingEvents(events.length, events.length + 4).then((data) => {
+      setLoading(false);
+      setEvents((prev) => [...prev, ...data]);
+    });
+  };
 
   return (
     <>
-      <div className="bg-wrap">
+      <div className="bg-wrap pb-4">
         <img
-          className="bg-image"
+          className="bg-image -z-50"
           src="events_bg.png"
           alt="Event Page Background"
         />
         {events.map((event) => (
           <EventCard event={event} key={event.id} />
         ))}
+        {events.length < totalCount && (
+          <div className="flex justify-center items-center">
+            <button className="button" onClick={loadMore}>
+              {(loading && (
+                <Spin
+                  indicator={<ImSpinner2 className="animate-spin text-white" />}
+                />
+              )) ||
+                "Load More"}
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

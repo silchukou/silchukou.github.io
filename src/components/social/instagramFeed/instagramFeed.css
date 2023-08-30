@@ -1,31 +1,32 @@
 @media (max-width: 640px) {
-    .card-image{
+    .card {
         width: 100%;
         height: auto;
     }
 }
 
 @media (min-width: 640px) {
-    .card-image{
+    .card {
         flex: 0 0 50%;
     }
 }
 
 @media (min-width: 768px) {
-    .card-image{
+    .card {
         flex: 0 0 33.33%;
     }
-    .last-2{
+
+    .last-2 {
         display: none;
     }
 }
 
 @media (min-width: 1024px) {
-    .card-image{
+    .card {
         flex: 0 0 25%;
     }
 
-    .last-2{
+    .last-2 {
         display: block;
     }
 }
@@ -49,4 +50,12 @@
 
 .card-container:hover .card-overlay {
     opacity: 1;
+}
+
+.card-image-background {
+    transition: transform 0.5s ease-in-out;
+}
+
+.card-container:hover .card-image-background {
+    transform: scale(1.05);
 }

@@ -33,15 +33,18 @@ export default function InstagramFeed() {
     <div className="flex flex-wrap justify-center items-center">
       {instagramData.map((data) => (
         <div
-          className={`card-image p-2 ${counter > 5 ? "last-2" : ""}`}
+          className={`card p-2 ${counter > 5 ? "last-2" : ""}`}
           key={data.id}
         >
           <a href={data.url} target="_blank" rel="noopener noreferrer">
-            <div className="card-container hover:scale-105 transition-all">
+            <div className="card-container rounded-lg transition-all">
               <img
                 src={data.thumbnail}
                 alt={data.caption}
-                className={"rounded-lg sm:h-auto" + justify[counter++ % 3]}
+                className={
+                  "card-image-background rounded-lg sm:h-auto" +
+                  justify[counter++ % 3]
+                }
               />
               {data.is_video && (
                 <div className="absolute top-2 right-2">

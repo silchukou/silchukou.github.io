@@ -14,19 +14,28 @@ export default function BannerTitle({
           alt="performing"
           className="w-full h-96 banner-image -z-10 rounded-2xl"
         />
-
-        {imagePosition === "right" && (
-          <div className="flex justify-evenly items-center">
-            <h2 className="uppercase text-5xl">{text}</h2>
-            <img src={imageSrc} alt="performing" className="h-100" />
-          </div>
-        )}
-        {imagePosition === "left" && (
-          <div className="flex justify-evenly items-center">
-            <img src={imageSrc} alt="performing" className="h-100" />
-            <h2 className="uppercase text-5xl">{text}</h2>
-          </div>
-        )}
+        <div className="flex justify-evenly flex-col lg:flex-row items-center">
+          {imagePosition === "right" && (
+            <>
+              <h2 className="uppercase text-5xl order-2 lg:order-1">{text}</h2>
+              <img
+                src={imageSrc}
+                alt="performing"
+                className="h-100 order-1 mb-2 lg:order-2"
+              />
+            </>
+          )}
+          {imagePosition === "left" && (
+            <>
+              <img
+                src={imageSrc}
+                alt="performing"
+                className="h-100 mb-2 lg:order-1"
+              />
+              <h2 className="uppercase text-5xl lg:order-2">{text}</h2>
+            </>
+          )}
+        </div>
       </div>
     </>
   );

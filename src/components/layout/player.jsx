@@ -1,15 +1,27 @@
-import { Slider } from "antd";
+import { Skeleton, Slider } from "antd";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FaPauseCircle, FaPlayCircle } from "react-icons/fa";
+import { getBannerSong } from "../../services/sanity";
+import { LocaleContext } from "../../contexts/locale";
 
 export default function Player() {
-  const track = {
-    image: "https://picsum.photos/100",
-    name: "Волки",
-    artistName: "Илья Сильчуков",
-    src: "demo.m4a",
-  };
+  const { locale } = useContext(LocaleContext);
+  const [loading, setLoading] = useState(true);
+
+  const [track, setTrack] = useState({});
+
+  useEffect(() => {
+    setLoading(true);
+    getBannerSong()
+      .then((data) => {
+        setLoading(false);
+        setTrack(data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const secToTime = (sec) => {
     const minutes = Math.floor(sec / 60);
@@ -56,51 +68,113 @@ export default function Player() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-grey p-5 rounded-xl max-w-fit">
-      <audio
-        src={track.src}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleMetadataUpdate}
-        ref={audioComponent}
-      />
-      <Image
-        src={track.image}
-        alt="Song Image"
-        className="rounded-xl"
-        width={100}
-        height={100}
-      />
+    <>
+      <div className="flex items-center justify-center bg-grey p-5 rounded-xl max-w-fit">
+        <audio
+          src={track?.song_url}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleMetadataUpdate}
+          ref={audioComponent}
+        />
+        {!loading && (
+          <Image
+            src={track?.image_url}
+            alt="Song Image"
+            className="rounded-xl"
+            width={100}
+            height={100}
+          />
+        )}
+        {loading && (
+          <Skeleton.Image
+            style={{ width: 100, marginBottom: 4 }}
+            className="rounded-xl"
+            active={true}
+          />
+        )}
 
-      <div className="flex flex-col items-left justify-center ml-3">
-        <h3 className="text-2xl font-bold text-white">{track.name}</h3>
-        <h4 className="text-xl font-normal text-gray-300">
-          {track.artistName}
-        </h4>
-        <div className="flex items-left justify-center align-middle items-center">
-          <p className="text-white text-sm tabular-nums">
-            {secToTime(player.currentTime)}
-          </p>
-          <div className="w-36 pr-2 pl-2">
-            <Slider
-              defaultValue={0}
-              max={100}
-              tooltip={{ open: false }}
-              onChange={handleSliderChange}
-              value={(player.currentTime / player.duration) * 100}
+        <div className="flex flex-col items-left justify-center ml-3">
+          {!loading && (
+            <h3 className="text-2xl font-bold text-white">
+              {track[locale + "_name"]}
+            </h3>
+          )}
+          {loading && (
+            <Skeleton.Input
+              style={{
+                width: 200,
+                height: 32,
+              }}
+              active={true}
+              size="small"
             />
-          </div>
-          <p className="text-white text-sm mr-2 tabular-nums">
-            {secToTime(player.duration)}
-          </p>
-          <button className="mr-2" onClick={handlePlayPause}>
-            {player.isPlaying ? (
-              <FaPauseCircle className="text-white text-3xl" />
-            ) : (
-              <FaPlayCircle className="text-white text-3xl" />
+          )}
+          {!loading && (
+            <h4 className="text-xl font-normal text-gray-300">
+              {track[locale + "_artistName"]}
+            </h4>
+          )}
+          {loading && (
+            <Skeleton.Input
+              className="mt-1"
+              style={{ width: 160, height: 20 }}
+              active={true}
+              size="small"
+            />
+          )}
+          <div className="flex items-left justify-center align-middle items-center">
+            {!loading && (
+              <p className="text-white text-sm tabular-nums">
+                {secToTime(player.currentTime)}
+              </p>
             )}
-          </button>
+            {loading && (
+              <Skeleton
+                paragraph={false}
+                className="mt-1 mb-1"
+                style={{ width: 35, height: 10 }}
+                active={true}
+                size="small"
+              />
+            )}
+            <div className="w-20 sm:w-36 pr-2 pl-2">
+              <Slider
+                defaultValue={0}
+                max={100}
+                tooltip={{ open: false }}
+                onChange={handleSliderChange}
+                value={(player.currentTime / player.duration) * 100}
+                disabled={loading}
+              />
+            </div>
+            {!loading && (
+              <p className="text-white text-sm mr-2 tabular-nums">
+                {secToTime(player.duration)}
+              </p>
+            )}
+            {loading && (
+              <Skeleton
+                paragraph={false}
+                className="mt-1 mr-2"
+                style={{ width: 35, height: 10 }}
+                active={true}
+                size="small"
+              />
+            )}
+            <button
+              className="mr-2"
+              onClick={handlePlayPause}
+              disabled={loading}
+            >
+              {player.isPlaying ? (
+                <FaPauseCircle className="text-white text-3xl" />
+              ) : (
+                <FaPlayCircle className="text-white text-3xl" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

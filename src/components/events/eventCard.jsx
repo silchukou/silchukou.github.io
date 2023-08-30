@@ -1,13 +1,17 @@
+import { useContext } from "react";
 import "./eventCard.css";
+import { LocaleContext } from "../../contexts/locale";
 
 export function EventCard(props) {
+  const { locale } = useContext(LocaleContext);
+
   const { event } = props;
   const date = new Date(event.date);
 
   return (
     <div className="pt-4 pb-4 text-center">
       <div className="bg-card-wrap rounded-2xl">
-        <img className="bg-card-image" src={event.background} alt="" />
+        <img className="bg-card-image" src={event.background_url} alt="" />
         <a href={event.link} target="_blank" rel="noreferrer">
           <div
             className={
@@ -19,14 +23,14 @@ export function EventCard(props) {
                 {date.getDate()}
               </div>
               <div className="text-xl font-light tracking-wider">
-                {date.toLocaleString("default", { month: "short" })}
+                {date.toLocaleString(locale, { month: "short" })}
               </div>
             </div>
             <div className="lg:text-3xl text-xl font-light tracking-wider">
-              {event.location}
+              {event[locale + "_location"]}
             </div>
             <div className="lg:text-3xl text-xl font-light tracking-wider">
-              {event.state}
+              {event[locale + "_state"]}
             </div>
           </div>
         </a>
