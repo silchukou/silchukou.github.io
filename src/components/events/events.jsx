@@ -1,15 +1,17 @@
 "client";
 import "./events.css";
 import { EventCard } from "./eventCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   getUpcomingEvents,
   getUpcomingEventsCount,
 } from "../../services/sanity";
 import { Spin } from "antd";
 import { ImSpinner2 } from "react-icons/im";
+import { LocaleContext } from "../../contexts/locale";
 
 export function Events() {
+  const { _t } = useContext(LocaleContext);
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -52,7 +54,7 @@ export function Events() {
                   indicator={<ImSpinner2 className="animate-spin text-white" />}
                 />
               )) ||
-                "Load More"}
+                _t("events:load_more")}
             </button>
           </div>
         )}
