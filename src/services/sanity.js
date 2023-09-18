@@ -41,8 +41,10 @@ export async function getNewsCount() {
 }
 
 export async function getUpcomingEvents(offset, limit) {
+  const today = new Date();
+  const todayString = today.toISOString().split("T")[0];
   return client.fetch(
-    `*[_type=='event'] | order(date desc) [${offset}...${limit}] {
+    `*[_type=='event' && date >= "${todayString}"] | order(date asc) [${offset}...${limit}] {
         "id": _id,
         date,
         en_location,
